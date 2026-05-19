@@ -23,18 +23,20 @@ import karte.Held;
 import karte.Karte;
 
 /**
+  * GUI zum Spiel Prince of Darkness.
   *
-  * GUI zum Spiel Prince of Darkness
+  * Diese Klasse erstellt ein Spielfenster, in dem zwei Helden gegeneinander kämpfen.
+  * Die Lebenspunkte werden mit Fortschrittsbalken angezeigt.
+  * Über einen Button wird jede neue Kampfrunde gestartet.
   *
   * @version 0.1 vom 24.10.2012
   * @author Tenbusch
   */
-
 public class PrinceOfDarkness extends JFrame {
   // Anfang Attribute
   private int runde = 1;
   private int lebenspunkteLinks, lebenspunkteRechts; //Lebenspunkte am Anfang eines Matches
-  private JPanel pnl_Hintergrund = new JPanel(null, true);
+  private JPanel pnl_Hintergrund = new JPanel(null, true); // Das ist der Hintergrund der GUI.
     private Karte karteLinks;
     private Karte karteRechts;
     private JPanel pnl_held1_dummy = new JPanel(null, true);
@@ -46,36 +48,50 @@ public class PrinceOfDarkness extends JFrame {
     private JLabel lbl_lebensverlustLinks = new JLabel();
     private JLabel lbl_lebensverlustRechts = new JLabel();
   // Ende Attribute
-
+ 
+  /**
+   * Konstruktor der GUI.
+   * Er erstellt das Fenster, richtet alle Komponenten ein
+   * und zeigt die beiden Heldenkarten an.
+   */
+ 
   public PrinceOfDarkness(String title, Held heldLinks, Held heldRechts) {
     // Frame-Initialisierung
     super(title);
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+   // Größe des Fensters festlegen.
     int frameWidth = 1024; 
     int frameHeight = 768;
     setSize(frameWidth, frameHeight);
+    // Bildschirmgröße holen, damit das Fenster mittig angezeigt werden kann.
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     int x = (d.width - getSize().width) / 2;
     int y = (d.height - getSize().height) / 2;
     setLocation(x, y);
+    // Fenster darf nicht vergrößert oder verkleinert werden.
     setResizable(false);
+   // ContentPane holen und kein Layout verwenden, damit Positionen manuell gesetzt werden.
     Container cp = getContentPane();
     cp.setLayout(null);
     karteLinks = new Karte(heldLinks);
     karteRechts= new Karte(heldRechts);
     // Anfang Komponenten
-
+   
+    // Hintergrundpanel über die ganze Spielfläche setzen und schwarz färben.
     pnl_Hintergrund.setBounds(0, 0, 1024, 745);
     pnl_Hintergrund.setBackground(Color.BLACK);
 
     cp.add(pnl_Hintergrund);
 
+   // Unsichtbarer Platzhalter für den linken Heldenbereich.
     pnl_held1_dummy.setBounds(10, 10, 270, 500);
     pnl_held1_dummy.setVisible(false);
     pnl_Hintergrund.add(pnl_held1_dummy);
+   // Unsichtbarer Platzhalter für den rechten Heldenbereich.
     pnl_held2_dummy.setBounds(740, 10, 270, 500);
     pnl_held2_dummy.setVisible(false);
     pnl_Hintergrund.add(pnl_held2_dummy);
+   // Lebensbalken für den linken Helden einrichten.
     pgb_lebenLinks.setBounds(288, 10, 210, 16);
     pgb_lebenLinks.setBackground(Color.WHITE);
     pgb_lebenLinks.setMaximum(heldLinks.getMaxLeben());
@@ -83,6 +99,7 @@ public class PrinceOfDarkness extends JFrame {
     pgb_lebenLinks.setForeground(Color.RED);
     pgb_lebenLinks.setStringPainted(true);
     pgb_lebenLinks.setString(heldLinks.getAktLeben() + "");
+   // Farben im linken Lebensbalken anpassen.
     pgb_lebenLinks.setUI(new BasicProgressBarUI(){
       protected Color getSelectionBackground() { return Color.RED; }
       protected Color getSelectionForeground() { return Color.WHITE; }
